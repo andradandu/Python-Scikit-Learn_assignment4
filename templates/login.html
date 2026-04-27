@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ML App</title>
+
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Login</h2>
+    {% if login_error %}
+        <p style="color: red; font-weight: bold;">{{ login_error }}</p>
+    {% endif %}
+    <!-- Login Form -->
+    <form method="POST">
+        <input 
+            type="text" 
+            name="username" 
+            placeholder="Username" 
+            required
+        >
+
+        <input 
+            type="password" 
+            name="password" 
+            placeholder="Password" 
+            required
+        >
+
+        <button type="submit">Login</button>
+    </form>
+
+    <hr style="margin: 20px 0;">
+
+    <h3>Register</h3>
+    {% if register_error %}
+        <p style="color: red; font-weight: bold;">{{ register_error }}</p>
+    {% endif %}
+    <!-- Register Form -->
+    <form action="/register" method="POST">
+        <input 
+            type="text" 
+            name="username" 
+            placeholder="New Username" 
+            required
+        >
+
+        <input 
+            type="password" 
+            name="password" 
+            placeholder="New Password" 
+            required
+        >
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+</body>
+</html>

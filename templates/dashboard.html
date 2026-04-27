@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ML App</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="navbar-title">ML App Dashboard</div>
+
+    <div class="navbar-user">
+        <span>Welcome, {{ username }}</span>
+
+        <form action="/logout" method="POST">
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<div class="container dashboard">
+
+    <h2>Dataset Dashboard</h2>
+
+    <!-- Buttons -->
+    <div class="button-group">
+        <button onclick="getShape()">Shape</button>
+        <button onclick="getColumns()">Columns</button>
+        <button onclick="getDescribe()">Statistics</button>
+    </div>
+
+    <!-- Head / Tail -->
+    <div class="button-group">
+        <input type="number" id="n" placeholder="Enter N">
+        <button onclick="getHead()">Head</button>
+        <button onclick="getTail()">Tail</button>
+    </div>
+
+    <!-- Output -->
+    <div id="output"></div>
+
+    <!-- Prediction Section -->
+    <div class="predict-box">
+        <h3>Make Prediction</h3>
+
+        <input id="f1" placeholder="Age">
+        <input id="f2" placeholder="Gender">
+        <input id="f3" placeholder="Height">
+        <input id="f4" placeholder="Weight">
+        <input id="f5" placeholder="BMI">
+
+        <button onclick="predict()">Predict</button>
+
+        <h4 id="predictionResult"></h4>
+    </div>
+
+</div>
+
+<script>
+
+// ============================
+// Helpers
+// ============================
+
+function renderTable(data) {
+    if (!data || data.length === 0) {
+        document.getElementById("output").innerHTML = "No data";
+        return;
+    }
+
+    let table = "<table><tr>";
+
+    // headers
+    Object.keys(data[0]).forEach(key => {
+        table += `<th>${key}</th>`;
+    });
+
+    table += "</tr>";
+
+    // rows
+    data.forEach(row => {
+        table += "<tr>";
+        Object.values(row).forEach(val => {
+            table += `<td>${val}</td>`;
+        });
+        table += "</tr>";
+    });
+
+    table += "</table>";
+
+    document.getElementById("output").innerHTML = table;
+}
+
+
+// ============================
+// API Calls
+// ============================
+
+async function getShape() {
+    let res = await fetch("/api/shape");
+    let data = await res.json();
+
+    document.getElementById("output").innerHTML =
+        `<p><b>Rows:</b> ${data.rows}</p>
+         <p><b>Columns:</b> ${data.columns}</p>`;
+}
+
+async function getColumns() {
+    let res = await fetch("/api/columns");
+    let data = await res.json();
+
+    let html = "<table><tr><th>Column</th><th>Type</th></tr>";
+
+    for (let col in data) {
+        html += `<tr><td>${col}</td><td>${data[col]}</td></tr>`;
+    }
+
+    html += "</table>";
+
+    document.getElementById("output").innerHTML = html;
+}
+
+async function getHead() {
+    let n = document.getElementById("n").value || 5;
+
+    let res = await fetch(`/api/head/${n}`);
+    let data = await res.json();
+
+    renderTable(data);
+}
+
+async function getTail() {
+    let n = document.getElementById("n").value || 5;
+
+    let res = await fetch(`/api/tail/${n}`);
+    let data = await res.json();
+
+    renderTable(data);
+}
+
+async function getDescribe() {
+    let res = await fetch("/api/describe");
+    let data = await res.json();
+
+    let html = "<table><tr><th>Feature</th>";
+
+    let stats = Object.keys(data);
+    let features = Object.keys(data[stats[0]]);
+
+    stats.forEach(stat => {
+        html += `<th>${stat}</th>`;
+    });
+
+    html += "</tr>";
+
+    features.forEach(feature => {
+        html += `<tr><td>${feature}</td>`;
+        stats.forEach(stat => {
+            html += `<td>${data[stat][feature].toFixed(2)}</td>`;
+        });
+        html += "</tr>";
+    });
+
+    html += "</table>";
+
+    document.getElementById("output").innerHTML = html;
+}
+
+
+// ============================
+// Prediction
+// ============================
+
+async function predict() {
+    let data = {
+        Age: parseFloat(document.getElementById("f1").value),
+        Gender: document.getElementById("f2").value,
+        Height: parseFloat(document.getElementById("f3").value),
+        Weight: parseFloat(document.getElementById("f4").value),
+        BMI: parseFloat(document.getElementById("f5").value)
+    };
+
+    let res = await fetch("/api/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    });
+
+    let result = await res.json();
+
+    console.log(result);
+
+    document.getElementById("predictionResult").innerText =
+        "Prediction: " + result.prediction;
+}
+
+</script>
+
+</body>
+</html>

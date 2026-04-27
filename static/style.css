@@ -1,0 +1,148 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    width: 100%;
+    background: #222;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar-user form {
+    margin: 0;
+}
+
+.logout-btn {
+    width: auto;
+    margin-top: 0;
+    background: #e74c3c;
+    padding: 8px 14px;
+}
+
+.logout-btn:hover {
+    background: #c0392b;
+}
+
+/* Container */
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    margin: 40px auto;
+}
+
+/* Dashboard layout */
+.dashboard {
+    width: 90%;
+    max-width: 900px;
+}
+
+/* Headings */
+h2, h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #4facfe;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #007bff;
+}
+
+/* Button group */
+.button-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.button-group button {
+    flex: 1;
+}
+
+/* Output box */
+#output {
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 8px;
+    min-height: 250px;
+    overflow-y: auto;
+    font-size: 13px;
+}
+
+/* Prediction section */
+.predict-box {
+    margin-top: 20px;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th {
+    background: #4facfe;
+    color: white;
+}
+
+th, td {
+    padding: 8px;
+    text-align: center;
+}
